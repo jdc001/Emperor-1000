@@ -3,6 +3,19 @@
 // The game still saves itself after every action (one autosave). On top of that: three named slots kept on this
 // device, and export/import so a campaign can be backed up as a file or a code, or moved to another device.
 const SLOTS = 3, SLOT_KEY = n => 'e1000-slot-' + n;
+// One time only: campaigns begun on the old map under the name Crown of the Franks (v4) carry over here.
+(function migrateOld() {
+  try {
+    if (localStorage.getItem('e1000-migrated')) return;
+    const auto = localStorage.getItem('crownOfTheFranks987v7');
+    if (auto && !localStorage.getItem('emperor1000v7')) localStorage.setItem('emperor1000v7', auto);
+    for (let n = 1; n <= SLOTS; n++) {
+      const o = localStorage.getItem('cotf-slot-' + n);
+      if (o && !localStorage.getItem(SLOT_KEY(n)) && JSON.parse(o).game.v === 7) localStorage.setItem(SLOT_KEY(n), o);
+    }
+    localStorage.setItem('e1000-migrated', '1');
+  } catch (e) { }
+})();
 function readSlot(n) { try { const s = localStorage.getItem(SLOT_KEY(n)); return s ? JSON.parse(s) : null; } catch (e) { return null; } }
 function slotLabel(s) { const d = s.fdefs.find(x => x.id === s.player); return `${d ? d.name : '?'} · ${dateStr(s.turn)}`; }
 function saveToSlot(n) {
