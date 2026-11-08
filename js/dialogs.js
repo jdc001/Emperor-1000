@@ -244,7 +244,7 @@ function openFaction(fid) {
 function startGame(fid) { sndUnlock(); newGame(fid); G.diff = SET.diff || 'gentle'; G.goal = SET.goal || 'empire'; G.tut = SET.guided !== false ? { i: 0, did: {} } : null; $('#title').style.display = 'none'; applyLayout(); save(); render(); homeView(false); if (isPhone()) setSheet('peek'); showIntro(fid); }
 function continueGame() { sndUnlock(); G = loadSave(); if (!G || G.v !== 7) { G = null; return showTitle(); } rebuildFmap(); if (!G.army) G.army = 'a0'; $('#title').style.display = 'none'; applyLayout(); render(); homeView(false); if (isPhone()) setSheet('peek'); }
 
-// ================= SPLASH SCENES (Jeff's) =================
+// ================= SPLASH SCENES =================
 const LATIN = { franks: 'REX FRANCORUM', english: 'REX ANGLORUM', germans: 'REX TEUTONICORUM', italians: 'REX ITALIAE', danes: 'REX DANORUM', emperor: 'IMPERATOR AUGUSTUS' };
 function embedShield(fid, x, y, size, flag) { return `<g transform="translate(${x},${y})">${shield(fid, size, flag)}</g>`; }
 function frame(inner, w = 600, h = 400) {
